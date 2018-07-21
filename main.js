@@ -21,12 +21,12 @@ function main(file, option, query){
     companies = fs.readFileSync(path.resolve(file), 'utf8');
   } catch (e) {
     console.log('Error: File could not be read');
-    return [];
+    return;
   } try {
     companies = JSON.parse(companies);
   } catch (e) {
     console.log('Error: file is not properly formatted json');
-    return [];
+    return;
   }
 
   //define option handling

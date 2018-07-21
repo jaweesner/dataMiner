@@ -2,7 +2,6 @@
 
 process.env.TESTENV = true;
 const { writeOut, main } = require('../main');
-const testData = require('./testData.js');
 
 describe('Console Output Function', ()=>{
   test('should print out correct output based on company array', (done)=>{
@@ -21,9 +20,9 @@ describe('Test Main CLI function error handline', ()=>{
   
   test('should handle incorrect files elegently', (done)=>{
     const mockConsoleLog = jest.spyOn(console, 'log');
-    expect(main('notApath', 'locate', 'DC')).toEqual([]);
+    expect(main('notApath', 'locate', 'DC')).toEqual();
     expect(mockConsoleLog).toHaveBeenLastCalledWith('Error: File could not be read');
-    expect(main('test/testData.js', 'locate', 'DC')).toEqual([]);
+    expect(main('test/testData.js', 'locate', 'DC')).toEqual();
     expect(mockConsoleLog).toHaveBeenLastCalledWith('Error: file is not properly formatted json');
     mockConsoleLog.mockRestore();
     done();
@@ -67,7 +66,7 @@ describe('Test Main CLI function routes', () => {
     done();
   })
   test('should handle company-type filtering', (done) => {
-    expect(main('test/testData.json', 'find_type', 'Not A Type').toEqual([]);
+    expect(main('test/testData.json', 'find_type', 'Not A Type')).toEqual([]);
     expect(main('test/testData.json', 'find_type', 'Food & Agriculture').map(({company_name})=>company_name)).toEqual(["Climate Corporation", "FarmLogs", "Food+Tech Connect", "Locavore", "Mercaris"])
     done();
   })

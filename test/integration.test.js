@@ -1,1 +1,0 @@
-test('dont error', ()=>expect(true).toBe(true));
