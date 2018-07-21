@@ -1,15 +1,21 @@
-//ingest file
+const fs = require('fs')
+function main(file, option, query){
+  //ingest file
+  const companies = JSON.parse(fs.readFileSync(file, 'utf-8'))
 
-//make choice for file options
-
-
-//perform operatiron
-
-
-//output to console:
-
-
-
+  console.log(companies);
+   //perform operation
+  optionRoutes = {
+    locate: (company) => company.state === query,
+    find_before: (company) => company.year_founded <= query,
+    find_after: (company) => company.year_founded >= query,
+    find_companies_between_size: (company) => company.full_time_employees=== query,
+    find_type: (company) => company.company_category === query
+  }
+  //print result
+  writeOut(companies.filter(company => optionRoutes[option](company)));
+}
+main(process.argv[2], process.argv[3], process.argv[4]);
 
 
 
@@ -19,9 +25,14 @@
  */
 //TO CHECK: do I need to make it so the company names will wrap?
 function writeOut(subsetArray){
-  console.log(`Company Names: 
-  ${subsetArray.map(company => company.company_name).join()}
-
-  Number of Companies: ${subsetArray.length}`);
+  if (!subsetArray.length){
+    console.log('No companies found with given parameters');
+    return;
+  } 
+  console.log(`Company Names:\n${subsetArray.map(company => company.company_name).join(', ')}\n\nNumber of Companies: ${subsetArray.length}`);
 }
 
+// if within a testing context, export functions for unit testing
+if (process.env.TESTENV = 'true'){
+  module.exports.writeOut = writeOut;
+}
