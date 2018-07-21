@@ -1,10 +1,10 @@
 
 
 process.env.TESTENV = true;
-const { writeOut } = require('../main');
+const { writeOut, main } = require('../main');
 const testData = require('./testData.js');
 
-describe('Console Output', ()=>{
+describe('Console Output Function', ()=>{
   test('should print out correct output based on company array', (done)=>{
     const mockConsoleLog = jest.spyOn(console, 'log');
     writeOut([]);
@@ -15,4 +15,18 @@ describe('Console Output', ()=>{
     mockConsoleLog.mockRestore();
     done();
   })
+})
+
+describe('Test Main CLI function', ()=>{
+  
+  test('test error handling of incorrect files', (done)=>{
+    const mockConsoleLog = jest.spyOn(console, 'log');
+    main('notApath', 'locate', 'DC');
+    expect(mockConsoleLog).toHaveBeenLastCalledWith('Error: File could not be read');
+    main('test/testData.js', 'locate', 'DC');
+    expect(mockConsoleLog).toHaveBeenLastCalledWith('Error: file is not properly formatted json');
+    done();
+  });
+
+
 })
